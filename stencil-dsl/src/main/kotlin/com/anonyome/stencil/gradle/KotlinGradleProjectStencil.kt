@@ -2,13 +2,14 @@
 
 package com.anonyome.stencil.gradle
 
+import com.anonyome.stencil.Template
 import com.anonyome.stencil.buildTemplate
 
-fun KotlinGradleProject(
+fun KotlinGradleProjectStencil(
         group: String,
         packageName: String,
         kotlinVersion:String = "1.3.14"
-) = buildTemplate {
+): Template = buildTemplate {
     "project-templates-kotlin-dsl" dir {
         "project-templates-plugin" dir {
             "build.gradle.kts" file KotlinJvmBuildGradleStencil(

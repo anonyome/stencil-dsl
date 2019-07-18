@@ -5,6 +5,7 @@ import com.anonyome.stencil.TemplateException.RootDoesntExist
 import com.anonyome.stencil.TemplateException.RootIsNotDirectory
 import java.io.File
 
+//todo - rename to Stencil
 sealed class Template {
     abstract val name: String
 
@@ -27,7 +28,7 @@ sealed class TemplateException(msg: String, cause: Throwable? = null): RuntimeEx
 /**
  * iterate over the provides this [Template] creating all files and directories in the tree
  */
-fun Template.createIn(inDir: File) {
+infix fun Template.createIn(inDir: File) {
     when {
         !inDir.exists() -> throw RootDoesntExist()
         !inDir.isDirectory -> throw RootIsNotDirectory()
