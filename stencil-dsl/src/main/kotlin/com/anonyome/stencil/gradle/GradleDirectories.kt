@@ -1,7 +1,7 @@
-package com.anonyome.template.gradle
+package com.anonyome.stencil.gradle
 
-import com.anonyome.template.TemplateBuilder
-import com.anonyome.template.TemplateBuilderBlock
+import com.anonyome.stencil.TemplateBuilder
+import com.anonyome.stencil.TemplateBuilderBlock
 
 fun TemplateBuilder.src(builder: TemplateBuilderBlock) = "src" dir builder
 fun TemplateBuilder.main(builder: TemplateBuilderBlock) = "main" dir builder

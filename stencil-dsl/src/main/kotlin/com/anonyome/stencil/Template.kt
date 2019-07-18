@@ -1,5 +1,8 @@
-package com.anonyome.template
+package com.anonyome.stencil
 
+import com.anonyome.stencil.Template.Dir
+import com.anonyome.stencil.TemplateException.RootDoesntExist
+import com.anonyome.stencil.TemplateException.RootIsNotDirectory
 import java.io.File
 
 sealed class Template {
@@ -26,13 +29,13 @@ sealed class TemplateException(msg: String, cause: Throwable? = null): RuntimeEx
  */
 fun Template.createIn(inDir: File) {
     when {
-        !inDir.exists() -> throw TemplateException.RootDoesntExist()
-        !inDir.isDirectory -> throw TemplateException.RootIsNotDirectory()
+        !inDir.exists() -> throw RootDoesntExist()
+        !inDir.isDirectory -> throw RootIsNotDirectory()
     }
 
     val file = File(inDir, name)
     when (this) {
-        is Template.Dir -> {
+        is Dir -> {
             file.mkdir()
             children.forEach { it.createIn(file) }
         }

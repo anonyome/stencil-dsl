@@ -1,4 +1,7 @@
-package com.anonyome.template
+package com.anonyome.stencil
+
+import com.anonyome.stencil.Template.Dir
+import com.anonyome.stencil.Template.File
 
 typealias TemplateBuilderBlock = TemplateBuilder.() -> Unit
 
@@ -11,14 +14,14 @@ class TemplateBuilder {
 
     fun build(): List<Template> = children
 
-    infix fun String.file(withContents: String?) = +Template.File(
-        this,
-        withContents
+    infix fun String.file(withContents: String?) = +File(
+            this,
+            withContents
     )
 
-    infix fun String.dir(builder: TemplateBuilderBlock) = +Template.Dir(
-        this,
-        buildTemplate(builder)
+    infix fun String.dir(builder: TemplateBuilderBlock) = +Dir(
+            this,
+            buildTemplate(builder)
     )
 
     /**
@@ -29,23 +32,24 @@ class TemplateBuilder {
 
         // start at the bottom and work our way up
         val finalDirName = pathParts.run { removeAt(lastIndex) }
-        val finalDir = Template.Dir(finalDirName, buildTemplate(builder))
+        val finalDir = Dir(finalDirName,
+                buildTemplate(builder))
 
         // add the generated folder hierarchy to the builder
         + pathParts.foldRight(finalDir) { parentName, childDir ->
-            Template.Dir(parentName, listOf(childDir))
+            Dir(parentName, listOf(childDir))
         }
     }
 }
 
 fun buildTemplate(builder: TemplateBuilderBlock): List<Template> = TemplateBuilder().apply { builder() }.build()
 
-fun TemplateBuilder.file(named: String, withContents: String? = null) = +Template.File(
-    named,
-    withContents
+fun TemplateBuilder.file(named: String, withContents: String? = null) = +File(
+        named,
+        withContents
 )
 
-fun TemplateBuilder.dir(named: String, builder: TemplateBuilderBlock = {}) = +Template.Dir(
-    named,
-    buildTemplate(builder)
+fun TemplateBuilder.dir(named: String, builder: TemplateBuilderBlock = {}) = +Dir(
+        named,
+        buildTemplate(builder)
 )
